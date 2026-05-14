@@ -2,6 +2,8 @@
 
 Fleet Tracker Management Software is a comprehensive solution designed to help businesses efficiently manage their fleet of vehicles. This software provides real-time tracking, maintenance scheduling, fuel management, and driver performance monitoring, allowing fleet managers to optimize operations and reduce costs.
 
+Make sure you watch the Demo Video. You can find it in this repo, under the name "Demo Fleet Tracker.mov".
+
 ## Features
 
 - **Real-Time Tracking**: Monitor the location of your vehicles in real-time using GPS technology.
