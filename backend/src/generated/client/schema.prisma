@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  OWNER
+  DISPATCHER
+  EMPLOYEE
+}
+
+enum VehicleType {
+  CAR
+  TRUCK
+  VAN
+  SCOOTER
+  BOAT
+  OTHER
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  IN_USE
+  IN_MAINTENANCE
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(EMPLOYEE)
+  phone        String?
+  createdAt    DateTime @default(now())
+
+  // Relatii
+  tasksAsAdmin     Task[]           @relation("AdminTasks")
+  tasksAsEmployee  Task[]           @relation("EmployeeTasks")
+  maintenanceLogs  MaintenanceLog[]
+  messagesSent     Message[]        @relation("SentMessages")
+  messagesReceived Message[]        @relation("ReceivedMessages")
+}
+
+model Vehicle {
+  id             Int           @id @default(autoincrement())
+  type           VehicleType
+  brand          String
+  model          String
+  licensePlate   String        @unique
+  status         VehicleStatus @default(AVAILABLE)
+  currentMileage Float         @default(0)
+  currentLat     Float?
+  currentLng     Float?
+  createdAt      DateTime      @default(now())
+
+  // Relatii
+  tasks           Task[]
+  maintenanceLogs MaintenanceLog[]
+  documents       Document[]
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  startDate   DateTime?
+  endDate     DateTime?
+
+  // Relatii (Foreign Keys)
+  adminId    Int
+  admin      User    @relation("AdminTasks", fields: [adminId], references: [id])
+  employeeId Int
+  employee   User    @relation("EmployeeTasks", fields: [employeeId], references: [id])
+  vehicleId  Int
+  vehicle    Vehicle @relation(fields: [vehicleId], references: [id])
+}
+
+model MaintenanceLog {
+  id          Int      @id @default(autoincrement())
+  reportType  String // ex: Alimentare, Avarie, Revizie
+  description String
+  cost        Float?
+  receiptUrl  String?
+  reportedAt  DateTime @default(now())
+
+  // Relatii
+  vehicleId  Int
+  vehicle    Vehicle @relation(fields: [vehicleId], references: [id])
+  employeeId Int
+  employee   User    @relation(fields: [employeeId], references: [id])
+}
+
+model Document {
+  id           Int       @id @default(autoincrement())
+  documentType String // ex: RCA, ITP, Rovinieta
+  fileUrl      String
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  // Relatii
+  vehicleId Int
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  timestamp DateTime @default(now())
+
+  // Relatii
+  senderId   Int
+  sender     User @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId Int
+  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}

@@ -1,0 +1,41 @@
+node_modules
+
+/generated/prisma
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# build / compile output
+dist/
+build/
+*.tsbuildinfo
+
+# environment / secret files
+.env
+.env.*.local
+.env.test
+
+# Prisma generated client (it’s built at install/runtime)
+prisma/client/
+
+# Prisma migrations – you can track them if you want schema history,
+# otherwise ignore the generated SQL; adjust to your team’s preference
+# prisma/migrations/
+
+# editor/IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# logs, coverage, etc.
+*.log
+coverage/
