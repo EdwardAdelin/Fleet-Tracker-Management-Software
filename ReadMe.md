@@ -35,6 +35,8 @@ To get started with Fleet Tracker Management Software, follow these steps:
 ## Support
 If you have any questions or need assistance with Fleet Tracker Management Software, please contact EdwardAdelin on Github.
 
+Any API`s that you see in this project are not real and they shall be replaced by you. Use a .env file and make youre you include it in .gitignore file in order to protect your API keys.
+
 ## Setup Instructions
 
 To set up Fleet Tracker Management Software, follow these instructions:
